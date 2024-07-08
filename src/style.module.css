@@ -8,4 +8,10 @@
 body{
     background-color:rgb(32,35,42);
     overflow:hidden ;
+    padding: 20px;
+
+}
+h1{
+    font-family: sans-serif;
+    color: antiquewhite;
 }

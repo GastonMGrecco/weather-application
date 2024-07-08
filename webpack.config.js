@@ -80,8 +80,8 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './public/index.html'
-        // favicon: './src/assets/SIRAE.svg',
+        template: './public/index.html',
+        favicon: './src/assets/weather.png'
       })
     ]
   };

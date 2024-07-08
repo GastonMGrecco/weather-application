@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { counterSlice } from '../slices/counter';
+import { loginSlice } from '@slices/loginSlice';
+import { weatherSlice } from '@slices/weatherSlice';
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer
+    login: loginSlice.reducer,
+    weather: weatherSlice.reducer
   }
 });
 
