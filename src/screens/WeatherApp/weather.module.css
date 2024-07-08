@@ -1,4 +1,28 @@
-.container-weather{
+@media (max-width: 768px) {
+    .container-weather {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .cards-container {
+        width: 90%;
+        padding: 0;
+    }
+    .form-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+    }
+}
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.container-weather {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -6,18 +30,22 @@
     height: 100vh;
     padding: 50px;
 }
-.login-form{
+
+.login-form {
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 350px;
-    height: 50vh; 
+    height: 50vh;
 }
-.targets-container{
+
+.cards-container {
     padding: 20px;
-    width: 75%;
+    width: 90%;
     display: flex;
     flex-wrap: wrap;
+    max-height: 90vh;
+    overflow-y: auto;
 }

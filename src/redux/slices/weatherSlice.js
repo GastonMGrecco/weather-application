@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  cities: []
+  cities: [],
+  loading: false,
+  error: null
 };
 
 export const weatherSlice = createSlice({
@@ -12,7 +14,15 @@ export const weatherSlice = createSlice({
       state.cities.push(payload);
     },
     setImage (state, { payload }) {
-      state.cities[payload.i].img = payload.img;
+      if (state.cities[payload.i]) {
+        state.cities[payload.i].img = payload.img;
+      }
+    },
+    setLoading (state, { payload }) {
+      state.loading = payload;
+    },
+    setError (state, { payload }) {
+      state.error = payload;
     },
     resetCities (state, { payload }) {
       state.cities = [];
@@ -20,4 +30,4 @@ export const weatherSlice = createSlice({
   }
 });
 
-export const { setCity, setImage, resetCities } = weatherSlice.actions;
+export const { setCity, setImage, resetCities, setLoading, setError } = weatherSlice.actions;

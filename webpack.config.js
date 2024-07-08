@@ -27,6 +27,7 @@ module.exports = (env, argv) => {
         '@shared': path.resolve(__dirname, 'src/shared'),
         '@screens': path.resolve(__dirname, 'src/screens'),
         '@slices': path.resolve(__dirname, 'src/redux/slices'),
+        '@services': path.resolve(__dirname, 'src/services'),
         '@assets': path.resolve(__dirname, 'src/assets')
       }
     },

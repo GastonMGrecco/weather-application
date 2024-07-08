@@ -2,16 +2,22 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormProvider, useForm } from 'react-hook-form';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import { setUserName } from '@slices/loginSlice';
-import { setCity, resetCities, setImage } from '@slices/weatherSlice';
+import { setCity, resetCities, setImage, setLoading, setError } from '@slices/weatherSlice';
 import Select from '@shared/Select';
-import Target from '@shared/Target';
+import Card from '@shared/Card';
+import { apiService } from '@services/apiService';
 import { CITIES_DATA } from './utils';
 import style from './weather.module.css';
+import { Alert } from '@mui/material';
 
 const Weather = () => {
   const userName = useSelector(state => state.login?.userName);
   const cities = useSelector(state => state.weather?.cities);
+  const loading = useSelector(state => state.weather?.loading);
+  const error = useSelector(state => state.weather?.error);
   const methods = useForm();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -21,23 +27,36 @@ const Weather = () => {
     }
   }, []);
   useEffect(() => {
-    dispatch(resetCities());
-    const arrayCitiesSelected = methods.getValues('cities');
-    arrayCitiesSelected?.forEach((city, i) => {
-      const cityFiltered = CITIES_DATA.filter(cityIntoObject => cityIntoObject.name === city);
-      const lat = cityFiltered[0].lat;
-      const long = cityFiltered[0].long;
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=307298b190f88060b9d58d5a9e6d892b`)
-        .then(res => {
-          dispatch(setCity(res.data));
-          return axios.get(`http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`);
-        })
-        .then(res => dispatch(setImage({ img: res?.config?.url, i })));
-    });
+    apiService(dispatch, resetCities, setLoading, setCity, setImage, setError, methods, axios, CITIES_DATA);
   }, [methods.watch('cities')]);
   return (
     <div className={style['container-weather']}>
-      <div>
+      {loading && <Box sx={{
+        display: 'flex',
+        position: 'absolute',
+        width: '90%',
+        height: '100%',
+        background: 'rgba(128, 128, 128, 0.452)'
+      }}>
+        <CircularProgress sx={{
+          display: 'flex',
+          position: 'absolute',
+          left: '50%',
+          top: '30%',
+          zoom: '150%',
+          color: 'white'
+        }}/>
+      </Box>}
+        {error && <Alert severity="error"
+        sx={{
+          display: 'flex',
+          position: 'absolute',
+          left: '30%',
+          top: '30%',
+          zoom: '150%'
+        }}>Oops!, something was wrong, try later. {error.message}</Alert>}
+
+      <div className={style['form-container']}>
         <FormProvider {...methods}>
           <h1>Welcome, {userName} !!!</h1>
           <Select
@@ -46,10 +65,10 @@ const Weather = () => {
           />
         </FormProvider>
       </div>
-      <div className={style['targets-container']}>
+      <div className={style['cards-container']}>
         {cities &&
           cities.map(city => (
-            <Target
+            <Card
               key={city.name}
               name={city.name}
               country={city.sys.country}
